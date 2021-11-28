@@ -1,0 +1,7 @@
+FROM alpine:latest
+MAINTAINER Jesus Mota
+
+RUN apk --no-cache add curl
+COPY execute.sh execute.sh
+
+ENTRYPOINT ["sh", "execute.sh"]

@@ -1,0 +1,9 @@
+version: '3'
+services:
+  test:
+    image: maven:3.5.4-jdk-8-alpine
+    volumes:
+      - ${MY_WORKSPACE}:/ws
+    working_dir: /ws${WORKSPACE_PATH:-/}
+    user: ${MY_USER:-root}
+    command: ./mvnw clean verify
