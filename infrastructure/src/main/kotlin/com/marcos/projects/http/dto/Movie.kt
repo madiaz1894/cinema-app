@@ -1,35 +1,33 @@
 package com.marcos.projects.http.dto
 
+import arrow.core.toOption
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.marcos.projects.model.Movie
 import java.util.Date
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class MovieResponse(
-    val id: Long,
-    val name : String,
-    val rating : Double,
-    val numberOfVotes : Int,
-    val runtime: Int,
+data class MovieBody(
     val imdbId: String,
-    val releaseDate: Date
+    val rating: Double?
 ) {
-    data class Prototype(
-        val name : String,
-        val rating : Double,
-        val numberOfVotes : Int,
-        val runtime: Int,
-        val imdbId: String,
-        val releaseDate: Date
-    ) {
-        constructor(movie: Movie): this(
-            name = movie.name,
-            rating = movie.rating,
-            numberOfVotes = movie.numberOfVotes,
-            runtime = movie.runtime,
-            imdbId = movie.imdbId,
-            releaseDate = movie.releaseDate
-        )
-    }
+    fun toMovie() = Movie(
+        imdbId, rating.toOption()
+    )
 
+    constructor(movie: Movie) : this(
+        movie.imdbId,
+        movie.rating.orNull()
+    )
 }
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class CompleteMovieResponse(
+    val imdbId : String,
+    val rating : Double,
+    val name: String,
+    val description: String,
+    val releaseDate: String,
+    val imdbRating : String,
+    val runtime: String
+)
+
