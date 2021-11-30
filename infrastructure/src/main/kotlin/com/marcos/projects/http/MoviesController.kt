@@ -2,8 +2,10 @@ package com.marcos.projects.http
 
 import arrow.core.getOrHandle
 import com.marcos.projects.actions.movies.CreateMovie
+import com.marcos.projects.actions.movies.GetMovieDetail
 import com.marcos.projects.actions.movies.GetMovieTimes
 import com.marcos.projects.actions.movies.UpsertMovieTimes
+import com.marcos.projects.http.dto.CompleteMovieResponse
 import com.marcos.projects.http.dto.MovieBody
 import com.marcos.projects.http.dto.MovieScheduleResponse
 import com.marcos.projects.http.dto.MovieTimesResponse
@@ -21,12 +23,21 @@ import org.springframework.web.bind.annotation.RequestBody
 class MoviesController (
     private val getMovieTimes: GetMovieTimes,
     private val createMovie: CreateMovie,
-    private val upsertMovieTimes: UpsertMovieTimes
+    private val upsertMovieTimes: UpsertMovieTimes,
+    private val getMovieDetail: GetMovieDetail,
     ) {
 
     @GetMapping("/{movieName}/times")
     fun getMovieTimes(@PathVariable movieName : String): MovieTimesResponse {
         return MovieTimesResponse(getMovieTimes.execute(movieName).getOrHandle {
+            logger.error(CustomExceptionHandler.getMessage(it))
+            throw it
+        })
+    }
+
+    @GetMapping("/{imdbId}/detail")
+    fun getMovieDetail(@PathVariable imdbId : String): CompleteMovieResponse {
+        return CompleteMovieResponse(getMovieDetail.execute(imdbId).getOrHandle {
             logger.error(CustomExceptionHandler.getMessage(it))
             throw it
         })

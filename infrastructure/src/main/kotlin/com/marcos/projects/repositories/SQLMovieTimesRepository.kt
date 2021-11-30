@@ -7,6 +7,7 @@ import com.marcos.projects.UnprocessedEntity
 import com.marcos.projects.http.dto.MovieScheduleResponse
 import com.marcos.projects.loggerFor
 import com.marcos.projects.model.*
+import com.marcos.projects.repositories.mappers.movieMapper
 import com.marcos.projects.repositories.mappers.movieScheduleResponseMapper
 import com.marcos.projects.repositories.mappers.movieTimesMapper
 import com.marcos.projects.repositories.queries.FIND_MOVIE_ID_NAME
@@ -70,6 +71,25 @@ internal open class SQLMovieTimesRepository (
         }
     }
 
+    override fun getMovie(movieId: String): Movie {
+        return try {
+            database.queryForObject(
+                FIND_MOVIE_ID_NAME,
+                mapOf("imdbId" to movieId),
+                movieMapper()
+            )?.toMovie().toOption()
+                .getOrElse { throw EntityNotFoundException("The movie with id: $movieId does not exist") }
+
+        } catch (exception: Exception) {
+            when (exception) {
+                is EmptyResultDataAccessException -> throw EntityNotFoundException("The movie with name $movieId does not exist")
+                else -> {
+                    throw exception
+                }
+            }
+        }
+    }
+
     @Transactional
     override fun getMovieTimes(name: String): MovieTimes {
         return try {
@@ -88,11 +108,6 @@ internal open class SQLMovieTimesRepository (
                 }
             }
         }
-    }
-
-    @Transactional
-    override fun getMovieDetail(imdbId: String): CompleteMovie {
-        TODO("Not yet implemented")
     }
 
     private fun findMovieTimes(movieId: String): List<MovieScheduleResponse> {

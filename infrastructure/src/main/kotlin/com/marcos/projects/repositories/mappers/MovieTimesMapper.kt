@@ -18,6 +18,16 @@ internal fun movieTimesMapper(findTemplateRequest: (String) -> List<MovieSchedul
         )
     }
 
+internal fun movieMapper(): (ResultSet, Int) -> MovieBody =
+    { rs, _ ->
+       MovieBody(
+            rs.getString("imdb_id"),
+            rs.getDouble("rating"),
+        )
+    }
+
+
+
 
 
 internal fun movieScheduleResponseMapper(): (ResultSet, Int) -> MovieScheduleResponse =

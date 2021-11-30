@@ -5,8 +5,8 @@ internal const val FIND_MOVIE_TIMES_BY_ID = """
     WHERE movie_id = :id;
 """
 internal const val FIND_MOVIE_ID_NAME = """
-    SELECT id, name FROM movies
-    WHERE name ILIKE :name;
+    SELECT imdb_id, rating FROM movies
+    WHERE imdb_id = :imdbId;
 """
 
 internal const val INSERT_MOVIE = """
