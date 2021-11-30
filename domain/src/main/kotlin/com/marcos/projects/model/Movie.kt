@@ -5,7 +5,8 @@ import arrow.core.getOrElse
 
 data class Movie (
     val imdbId : String,
-    val rating : Option<Double>
+    val rating : Option<Double>,
+    val numberOfVotes: Int
 )
 
 data class CompleteMovie(

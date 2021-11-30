@@ -1,25 +1,28 @@
 package com.marcos.projects.http.dto
 
 import arrow.core.toOption
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.marcos.projects.model.CompleteMovie
 import com.marcos.projects.model.ImdbMovie
 import com.marcos.projects.model.Movie
-import java.util.Date
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class MovieBody(
     val imdbId: String,
-    val rating: Double?
+    val rating: Double?,
+    @JsonIgnore
+    val numberOfVotes: Int
 ) {
     fun toMovie() = Movie(
-        imdbId, rating.toOption()
+        imdbId, rating.toOption(), numberOfVotes
     )
 
     constructor(movie: Movie) : this(
         movie.imdbId,
-        movie.rating.orNull()
+        movie.rating.orNull(),
+        movie.numberOfVotes
     )
 }
 

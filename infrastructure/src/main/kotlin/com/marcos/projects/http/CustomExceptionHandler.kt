@@ -3,6 +3,7 @@ package com.marcos.projects.http
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import com.marcos.projects.EntityNotAvailableException
 import com.marcos.projects.EntityNotFoundException
+import com.marcos.projects.RatingOutOfBoundException
 import com.marcos.projects.UnprocessedEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -43,6 +44,11 @@ class CustomExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentExceptionParameter(e: IllegalArgumentException): ResponseEntity<Any> {
+        return badRequestResponse(e.message)
+    }
+
+    @ExceptionHandler(RatingOutOfBoundException::class)
+    fun handleRatingOutOfBoundParameter(e: RatingOutOfBoundException): ResponseEntity<Any> {
         return badRequestResponse(e.message)
     }
 

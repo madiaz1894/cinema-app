@@ -1,9 +1,6 @@
 package com.marcos.projects.config
 
-import com.marcos.projects.actions.movies.CreateMovie
-import com.marcos.projects.actions.movies.GetMovieDetail
-import com.marcos.projects.actions.movies.GetMovieTimes
-import com.marcos.projects.actions.movies.UpsertMovieTimes
+import com.marcos.projects.actions.movies.*
 import com.marcos.projects.model.MovieDetailService
 import com.marcos.projects.model.MoviesRepository
 import org.springframework.context.annotation.Bean
@@ -27,4 +24,8 @@ internal class ActionsConfig {
     @Bean
     fun getMovieDetail(movieDetailService: MovieDetailService, moviesRepository: MoviesRepository) =
         GetMovieDetail(movieDetailService, moviesRepository)
+
+    @Bean
+    fun rateAMovie(moviesRepository: MoviesRepository) =
+        RateAMovie(moviesRepository)
 }

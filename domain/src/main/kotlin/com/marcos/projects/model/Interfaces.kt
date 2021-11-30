@@ -6,6 +6,7 @@ interface MoviesRepository {
     fun upsertMovieTimes(movieId: String, movieTimes: List<MovieSchedule>)
     fun getMovie(movieId: String): Movie
     fun getMovieTimes(imdbId : String): MovieTimes
+    fun updateRating(imdbId: String, rating : Double, numberOfVotes: Int)
 }
 
 interface MovieDetailService {

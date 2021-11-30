@@ -10,6 +10,7 @@ import com.marcos.projects.model.*
 import com.marcos.projects.repositories.mappers.movieMapper
 import com.marcos.projects.repositories.mappers.movieScheduleResponseMapper
 import com.marcos.projects.repositories.mappers.movieTimesMapper
+import com.marcos.projects.repositories.queries.*
 import com.marcos.projects.repositories.queries.FIND_MOVIE_ID_NAME
 import com.marcos.projects.repositories.queries.FIND_MOVIE_TIMES_BY_ID
 import com.marcos.projects.repositories.queries.INSERT_MOVIE
@@ -30,7 +31,7 @@ internal open class SQLMovieTimesRepository (
             logger.info("creating movie: ${movie.imdbId}")
             val mapParams: MutableMap<String, Any?> = HashMap()
             mapParams["imdbId"] = movie.imdbId
-            mapParams["rating"] = movie.rating.getOrElse { 0 }
+            mapParams["rating"] = movie.rating.getOrElse { 5.0 }
             val params = MapSqlParameterSource()
                 .addValues(mapParams)
             database.update(INSERT_MOVIE, params)
@@ -71,6 +72,7 @@ internal open class SQLMovieTimesRepository (
         }
     }
 
+    @Transactional
     override fun getMovie(movieId: String): Movie {
         return try {
             database.queryForObject(
@@ -107,6 +109,25 @@ internal open class SQLMovieTimesRepository (
                     throw exception
                 }
             }
+        }
+    }
+
+    @Transactional
+    override fun updateRating(imdbId: String, rating: Double, numberOfVotes: Int) {
+        try {
+            logger.info("Updating rating for movie: $imdbId")
+            val mapParams: MutableMap<String, Any?> = HashMap()
+            mapParams["movieId"] = imdbId
+            mapParams["rating"] = rating
+            mapParams["numberOfVotes"] = numberOfVotes
+
+            val params = MapSqlParameterSource()
+                .addValues(mapParams)
+            database.update(UPDATE_RATING_FOR_MOVIE, params)
+        } catch (e: DataAccessException) {
+            throw UnprocessedEntity(
+                "The movie cannot be inserted into postgresql database", e
+            )
         }
     }
 
