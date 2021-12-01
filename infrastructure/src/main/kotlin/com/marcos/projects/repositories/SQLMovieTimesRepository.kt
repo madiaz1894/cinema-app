@@ -93,18 +93,18 @@ internal open class SQLMovieTimesRepository (
     }
 
     @Transactional
-    override fun getMovieTimes(name: String): MovieTimes {
+    override fun getMovieTimes(imdbId: String): MovieTimes {
         return try {
             database.queryForObject(
                 FIND_MOVIE_ID_NAME,
-                mapOf("name" to name),
+                mapOf("imdbId" to imdbId),
                 movieTimesMapper(this::findMovieTimes)
             )?.toMoviesTime().toOption()
-                .getOrElse { throw EntityNotFoundException("The movie with name: $name does not exist") }
+                .getOrElse { throw EntityNotFoundException("The movie with id: $imdbId does not exist") }
 
         } catch (exception: Exception) {
             when (exception) {
-                is EmptyResultDataAccessException -> throw EntityNotFoundException("The movie with name $name does not exist")
+                is EmptyResultDataAccessException -> throw EntityNotFoundException("The movie with id $imdbId does not exist")
                 else -> {
                     throw exception
                 }
