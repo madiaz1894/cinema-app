@@ -1,7 +1,6 @@
 package com.marcos.projects.http.dto
 
 import arrow.core.toOption
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.marcos.projects.model.CompleteMovie
@@ -11,16 +10,17 @@ import com.marcos.projects.model.Movie
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class MovieBody(
     val imdbId: String,
+    val name: String,
     val rating: Double?,
-    @JsonIgnore
     val numberOfVotes: Int
 ) {
     fun toMovie() = Movie(
-        imdbId, rating.toOption(), numberOfVotes
+        imdbId, name, rating.toOption(), numberOfVotes
     )
 
     constructor(movie: Movie) : this(
         movie.imdbId,
+        movie.name,
         movie.rating.orNull(),
         movie.numberOfVotes
     )

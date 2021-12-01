@@ -31,6 +31,7 @@ internal open class SQLMovieTimesRepository (
             logger.info("creating movie: ${movie.imdbId}")
             val mapParams: MutableMap<String, Any?> = HashMap()
             mapParams["imdbId"] = movie.imdbId
+            mapParams["name"] = movie.name
             mapParams["rating"] = movie.rating.getOrElse { 5.0 }
             val params = MapSqlParameterSource()
                 .addValues(mapParams)

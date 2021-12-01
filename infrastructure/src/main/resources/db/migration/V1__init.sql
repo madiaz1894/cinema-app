@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS MOVIES
 (
     imdb_id                 VARCHAR(20) PRIMARY KEY,
+    name                    VARCHAR NOT NULL,
     rating                  DECIMAL(2,1) CONSTRAINT chk_ratings CHECK (rating >= 0 AND rating <= 5) DEFAULT 5.0 NOT NULL,
     number_of_votes         INT NOT NULL DEFAULT 0
 );

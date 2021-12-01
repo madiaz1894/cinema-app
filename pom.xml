@@ -30,6 +30,7 @@
 
         <junit.version>5.6.2</junit.version>
         <assertk.version>0.21</assertk.version>
+        <springfox.version>3.0.0</springfox.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
@@ -370,6 +371,12 @@
             <artifactId>opentracing-util</artifactId>
             <version>${opentracing.version}</version>
           </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
 
             <!-- Test dependencies -->
             <dependency>

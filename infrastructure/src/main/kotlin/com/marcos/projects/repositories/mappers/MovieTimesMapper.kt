@@ -10,6 +10,7 @@ internal fun movieTimesMapper(findTemplateRequest: (String) -> List<MovieSchedul
         val id = rs.getString("imdb_id")
         val movie = MovieBody(
             id,
+            rs.getString("name"),
             rs.getDouble("rating"),
             rs.getInt("number_of_votes")
         )
@@ -23,6 +24,7 @@ internal fun movieMapper(): (ResultSet, Int) -> MovieBody =
     { rs, _ ->
        MovieBody(
             rs.getString("imdb_id"),
+            rs.getString("name"),
             rs.getDouble("rating"),
             rs.getInt("number_of_votes")
         )

@@ -10,8 +10,8 @@ internal const val FIND_MOVIE_ID_NAME = """
 """
 
 internal const val INSERT_MOVIE = """
-    INSERT INTO movies (imdb_id, rating) 
-     VALUES (:imdbId, :rating);
+    INSERT INTO movies (imdb_id, rating, name) 
+     VALUES (:imdbId, :rating, :name);
 """
 
 internal const val INSERT_MOVIE_TIMES_AND_PRIZES = """
