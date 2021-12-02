@@ -28,4 +28,8 @@ internal class ActionsConfig {
     @Bean
     fun rateAMovie(moviesRepository: MoviesRepository) =
         RateAMovie(moviesRepository)
+
+    @Bean
+    fun getAllMovies(moviesRepository: MoviesRepository) =
+        GetAllMovies(moviesRepository)
 }

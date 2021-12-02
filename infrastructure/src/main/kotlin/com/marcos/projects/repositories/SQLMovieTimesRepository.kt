@@ -1,6 +1,7 @@
 package com.marcos.projects.repositories
 
 import arrow.core.getOrElse
+import arrow.core.mapOf
 import arrow.core.toOption
 import com.marcos.projects.EntityNotFoundException
 import com.marcos.projects.UnprocessedEntity
@@ -20,6 +21,7 @@ import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.jdbc.core.namedparam.SqlParameterSource
 import javax.transaction.Transactional
 
 internal open class SQLMovieTimesRepository (
@@ -106,6 +108,23 @@ internal open class SQLMovieTimesRepository (
         } catch (exception: Exception) {
             when (exception) {
                 is EmptyResultDataAccessException -> throw EntityNotFoundException("The movie with id $imdbId does not exist")
+                else -> {
+                    throw exception
+                }
+            }
+        }
+    }
+
+    @Transactional
+    override fun getAllMovies(): List<Movie> {
+        return try {
+            database.query(
+                FIND_ALL_MOVIES,
+                movieMapper()
+            ).map { it.toMovie() }
+        }catch (exception: Exception) {
+            when (exception) {
+                is EmptyResultDataAccessException -> throw EntityNotFoundException("There are not movies here")
                 else -> {
                     throw exception
                 }

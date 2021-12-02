@@ -9,6 +9,10 @@ internal const val FIND_MOVIE_ID_NAME = """
     WHERE imdb_id = :imdbId;
 """
 
+internal const val FIND_ALL_MOVIES = """
+    SELECT * FROM movies;
+"""
+
 internal const val INSERT_MOVIE = """
     INSERT INTO movies (imdb_id, rating, name) 
      VALUES (:imdbId, :rating, :name);
